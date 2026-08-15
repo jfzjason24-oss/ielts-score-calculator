@@ -64,6 +64,8 @@ python -m http.server 8000
 
 这是一个非官方学习工具，与 IELTS、British Council、IDP 或 Cambridge University Press & Assessment 无隶属、合作或认可关系。IELTS 名称及相关标识归其各自权利人所有。最终成绩以考试机构正式成绩单为准。详见 [NOTICE.md](./NOTICE.md)。
 
+本项目在开发、测试和发布过程中使用了 OpenAI Codex 辅助；最终代码由仓库所有者审核并发布。
+
 ## License
 
 [MIT](./LICENSE)。MIT License 仅适用于本仓库中的原创代码和文档，不授予任何第三方名称、商标或标识的使用权。
