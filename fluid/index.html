@@ -3,620 +3,76 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="流体编辑风的非官方 IELTS 雅思总分计算器，按四科 Band Score 换算 Overall Band。">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <title>雅思总分计算器 · 汇流刻度版</title>
-<style>
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="旧版地址兼容页：正在前往中英双语 IELTS 雅思总分计算器。">
+  <meta http-equiv="refresh" content="0; url=../index.html">
+  <link rel="canonical" href="https://jfzjason24-oss.github.io/ielts-score-calculator/">
+  <title>正在前往雅思总分计算器 | Redirecting to IELTS Band Calculator</title>
+  <style>
     :root {
-      --paper: #f6f3ea;
-      --paper-2: #eeeadf;
-      --ink: #171a1d;
-      --muted: #666b70;
-      --line: #c9c5bb;
-      --official: #e31837;
-      --blue: #2756d8;
-      --teal: #008f7a;
-      --coral: #df533f;
-      --amber: #d89100;
-      --focus: #005fcc;
       color-scheme: light;
+      font-family: "Aptos", "Segoe UI Variable", "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #171a1d;
+      background: #f6f3ea;
     }
 
     * { box-sizing: border-box; }
 
-    html { background: var(--paper); }
-
     body {
-      margin: 0;
+      display: grid;
       min-width: 320px;
       min-height: 100vh;
-      color: var(--ink);
-      background:
-        linear-gradient(100deg, transparent 0 69%, rgba(23,26,29,.035) 69% 69.1%, transparent 69.1%),
-        repeating-linear-gradient(0deg, transparent 0 47px, rgba(23,26,29,.045) 47px 48px),
-        var(--paper);
-      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      font-size: 16px;
-    }
-
-    button, input { font: inherit; }
-
-    .skip-link {
-      position: fixed;
-      z-index: 100;
-      top: 8px;
-      left: 8px;
-      padding: 10px 14px;
-      color: #fff;
-      background: var(--ink);
-      transform: translateY(-150%);
-    }
-
-    .skip-link:focus { transform: translateY(0); }
-
-    button:focus-visible, input:focus-visible, a:focus-visible {
-      outline: 3px solid var(--focus);
-      outline-offset: 3px;
-    }
-
-    .page {
-      width: min(1220px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: 28px 0 22px;
-    }
-
-    .topbar {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      align-items: center;
-      gap: 22px;
-      padding-bottom: 18px;
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .wordmark {
-      display: flex;
-      align-items: baseline;
-      gap: 13px;
-      min-width: 0;
-    }
-
-    .wordmark strong {
-      font-size: clamp(25px, 3vw, 42px);
-      line-height: .95;
-      letter-spacing: -.05em;
-      white-space: nowrap;
-    }
-
-    .wordmark span,
-    .edition {
-      font: 700 11px/1.2 Consolas, "SFMono-Regular", monospace;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .unofficial {
-      padding: 8px 11px;
-      color: #fff;
-      background: var(--ink);
-      font-size: 13px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .hero {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(330px, .72fr);
-      min-height: 565px;
-      margin-top: 18px;
-      overflow: hidden;
-      border: 1.5px solid var(--ink);
-      background: rgba(246,243,234,.93);
-      box-shadow: 9px 9px 0 rgba(23,26,29,.13);
-    }
-
-    .flow-field {
-      position: relative;
-      z-index: 1;
-      padding: 26px 45px 26px 28px;
-      overflow: hidden;
-    }
-
-    .flow-field::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      top: -15%;
-      right: -88px;
-      width: 180px;
-      height: 130%;
-      background: var(--paper-2);
-      border-left: 1px solid var(--line);
-      transform: rotate(7deg);
-      transform-origin: center;
-    }
-
-    .section-kicker,
-    .result-kicker,
-    .micro {
-      font: 700 10px/1.35 Consolas, "SFMono-Regular", monospace;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .section-heading h1 {
-      max-width: 650px;
-      margin: 5px 0 0;
-      font-size: clamp(24px, 3.2vw, 44px);
-      line-height: 1.02;
-      letter-spacing: -.045em;
-    }
-
-    .section-heading p {
-      max-width: 190px;
       margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-      text-align: right;
-    }
-
-    .channels { display: grid; gap: 9px; }
-
-    .channel {
-      --tone: var(--blue);
-      position: relative;
-      display: grid;
-      grid-template-columns: 116px 42px minmax(180px, 1fr) 42px 62px;
-      align-items: center;
-      gap: 10px;
-      min-height: 86px;
-      padding: 12px 4px 12px 16px;
-      border-top: 1px solid var(--line);
-    }
-
-    .channel:last-child { border-bottom: 1px solid var(--line); }
-    .channel:nth-child(2) { --tone: var(--teal); }
-    .channel:nth-child(3) { --tone: var(--coral); }
-    .channel:nth-child(4) { --tone: var(--amber); }
-
-    .channel::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 18px;
-      bottom: 18px;
-      width: 5px;
-      background: var(--tone);
-    }
-
-    .skill-cn {
-      display: block;
-      font-size: 19px;
-      font-weight: 900;
-      letter-spacing: -.02em;
-    }
-
-    .skill-en {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font: 700 9px/1.2 Consolas, monospace;
-      letter-spacing: .14em;
-    }
-
-    .step {
-      width: 38px;
-      height: 38px;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      color: #fff;
-      background: var(--ink);
-      cursor: pointer;
-      font-size: 22px;
-      line-height: 1;
-      transition: transform .12s ease, background .12s ease;
-    }
-
-    .step:hover { background: var(--tone); }
-    .step:active { transform: scale(.92); }
-    .step:disabled { opacity: .35; cursor: not-allowed; }
-
-    .range-wrap {
-      display: grid;
-      gap: 7px;
-      min-width: 0;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      height: 19px;
-      margin: 0;
-      accent-color: var(--tone);
-      cursor: pointer;
-    }
-
-    .ticks {
-      display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font: 700 8px/1 Consolas, monospace;
-    }
-
-    .band-value {
-      display: grid;
+      padding: 24px;
       place-items: center;
-      min-height: 53px;
-      border: 1px solid var(--ink);
-      color: var(--ink);
+    }
+
+    main {
+      width: min(100%, 640px);
+      padding: clamp(28px, 7vw, 56px);
+      border: 2px solid currentColor;
       background: #fffdf7;
-      font: 900 21px/1 Consolas, monospace;
-      font-variant-numeric: tabular-nums;
+      box-shadow: 8px 8px 0 rgb(23 26 29 / 14%);
     }
 
-    .band-value small {
-      color: var(--muted);
-      font-size: 7px;
-      letter-spacing: .1em;
+    p {
+      margin: 0;
+      font-size: clamp(18px, 3vw, 24px);
+      line-height: 1.55;
     }
 
-    .result-panel {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      padding: 26px 28px 24px 62px;
-      color: #fff;
-      background:
-        linear-gradient(146deg, rgba(39,86,216,.90) 0 14%, rgba(0,143,122,.86) 14% 28%, rgba(223,83,63,.92) 28% 42%, rgba(216,145,0,.88) 42% 53%, var(--ink) 53% 100%);
-      clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
-    }
+    p + p { margin-top: 8px; }
 
-    .result-header {
-      display: flex;
+    a {
+      display: inline-flex;
+      min-height: 44px;
+      margin-top: 24px;
+      padding: 11px 16px;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .ready { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; }
-    .ready::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
-
-    .result-main {
-      display: grid;
-      align-content: center;
-      justify-items: center;
-      flex: 1;
-      min-height: 290px;
-      text-align: center;
-    }
-
-    .result-label { font-size: 17px; font-weight: 800; }
-
-    .overall {
-      margin: 4px 0 0;
-      font-size: clamp(94px, 11vw, 154px);
-      line-height: .88;
-      letter-spacing: -.08em;
-      font-weight: 900;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .overall-caption {
-      margin-top: 13px;
-      font: 700 11px/1.2 Consolas, monospace;
-      letter-spacing: .14em;
-    }
-
-    .average-line {
-      margin-top: 19px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255,255,255,.4);
-      font-size: 13px;
-    }
-
-    .average-line output { margin-left: 6px; font: 900 18px/1 Consolas, monospace; }
-
-    .snap-box {
-      padding: 15px 0;
-      border-top: 1px solid rgba(255,255,255,.4);
-      border-bottom: 1px solid rgba(255,255,255,.4);
-    }
-
-    .snap-box p {
-      margin: 7px 0 0;
-      font: 800 13px/1.4 Consolas, "Microsoft YaHei", sans-serif;
-    }
-
-    .reset {
-      align-self: end;
-      margin-top: 18px;
-      padding: 10px 16px;
-      border: 1px solid #fff;
-      color: #fff;
+      border: 1px solid currentColor;
+      color: inherit;
       background: transparent;
-      cursor: pointer;
-      font-weight: 800;
+      font-weight: 700;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
     }
 
-    .reset:hover { color: var(--ink); background: #fff; }
+    a:hover { color: #fff; background: #171a1d; }
 
-    .rule-strip {
-      display: grid;
-      grid-template-columns: 1.5fr repeat(3, .55fr);
-      margin-top: 28px;
-      border-top: 2px solid var(--ink);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .rule-intro, .example { padding: 18px 20px; }
-    .example { display: grid; place-items: center; border-left: 1px solid var(--line); text-align: center; }
-    .rule-intro h2 { margin: 6px 0 5px; font-size: clamp(20px, 2.3vw, 29px); letter-spacing: -.03em; }
-    .rule-intro p, .example p { margin: 0; color: var(--muted); font-size: 12px; }
-    .example strong { font: 900 16px/1.2 Consolas, monospace; }
-    .example b { color: var(--official); }
-
-    .source {
-      display: grid;
-      grid-template-columns: minmax(0,1fr) auto;
-      align-items: center;
-      gap: 18px;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid var(--ink);
-    }
-
-    .source-logo {
-      width: 78px;
-      height: 48px;
-      object-fit: contain;
-      background: #fff;
-      border: 1px solid var(--line);
-    }
-
-    .source p { margin: 2px 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-    .source strong { color: var(--official); font: 800 9px/1.2 Consolas, monospace; letter-spacing: .12em; }
-
-    .source a {
-      padding: 11px 14px;
-      border: 1px solid var(--ink);
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .source a:hover { color: #fff; background: var(--ink); }
-
-    @media (max-width: 900px) {
-      .page { width: min(100% - 30px, 720px); padding-top: 18px; }
-      .topbar { grid-template-columns: 1fr auto; }
-      .edition { display: none; }
-      .hero { grid-template-columns: 1fr; }
-      .flow-field { padding: 24px 18px; }
-      .flow-field::after { display: none; }
-      .result-panel { min-height: 430px; padding-left: 28px; clip-path: none; }
-      .rule-strip { grid-template-columns: 1fr 1fr 1fr; }
-      .rule-intro { grid-column: 1 / -1; }
-      .example:first-of-type { border-left: 0; }
-      .source { grid-template-columns: 1fr; }
-      .source a { grid-column: 1; text-align: center; }
-    }
-
-    @media (max-width: 560px) {
-      body { background: var(--paper); }
-      .page { width: min(100% - 22px, 440px); }
-      .topbar { grid-template-columns: 1fr; gap: 10px; }
-      .unofficial { justify-self: start; }
-      .wordmark { display: block; }
-      .wordmark span { display: block; margin-top: 8px; }
-      .section-heading { display: block; }
-      .section-heading p { margin-top: 10px; text-align: left; }
-      .channel {
-        grid-template-columns: 1fr 38px 58px 38px;
-        gap: 7px;
-        padding: 13px 0 13px 14px;
-      }
-      .range-wrap { grid-column: 1 / -1; grid-row: 2; padding-right: 5px; }
-      .channel .step.minus { grid-column: 2; grid-row: 1; }
-      .channel .band-value { grid-column: 3; grid-row: 1; }
-      .channel .step.plus { grid-column: 4; grid-row: 1; }
-      .result-panel { min-height: 390px; }
-      .rule-strip { grid-template-columns: 1fr; }
-      .example { border-top: 1px solid var(--line); border-left: 0; }
-      .source { grid-template-columns: 1fr; gap: 12px; }
-      .source-logo { width: 60px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    a:focus-visible {
+      outline: 3px solid #005fcc;
+      outline-offset: 4px;
     }
   </style>
+  <script>
+    window.location.replace("../index.html");
+  </script>
 </head>
 <body>
-  <a class="skip-link" href="#calculator">跳到计算器</a>
-  <main class="page" id="calculator">
-    <header class="topbar">
-      <div class="wordmark">
-        <strong>雅思总分计算器</strong>
-        <span>BAND FLOW / 04→01</span>
-      </div>
-      <span class="unofficial">非官方估算工具</span>
-      <span class="edition">0.5 step · live result</span>
-    </header>
-
-    <section class="hero" aria-labelledby="calculator-title">
-      <div class="flow-field">
-        <div class="section-heading">
-          <div>
-            <span class="section-kicker">01 / 输入四科 band</span>
-            <h1 id="calculator-title">四条能力轨道，<br>汇入一个最终刻度。</h1>
-          </div>
-          <p>拖动滑杆或点按加减按钮；每次调整 0.5，结果即时更新。</p>
-        </div>
-
-        <div class="channels">
-          <div class="channel" data-channel="listening">
-            <label for="listening"><span class="skill-cn">听力</span><span class="skill-en">LISTENING</span></label>
-            <button class="step minus" type="button" aria-label="听力减少 0.5">−</button>
-            <div class="range-wrap">
-              <input id="listening" data-skill="listening" type="range" min="0" max="9" step="0.5" value="6.5" aria-label="听力成绩">
-              <span class="ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></span>
-            </div>
-            <button class="step plus" type="button" aria-label="听力增加 0.5">+</button>
-            <output class="band-value" for="listening"><span>6.5</span><small>BAND</small></output>
-          </div>
-
-          <div class="channel" data-channel="reading">
-            <label for="reading"><span class="skill-cn">阅读</span><span class="skill-en">READING</span></label>
-            <button class="step minus" type="button" aria-label="阅读减少 0.5">−</button>
-            <div class="range-wrap">
-              <input id="reading" data-skill="reading" type="range" min="0" max="9" step="0.5" value="6.5" aria-label="阅读成绩">
-              <span class="ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></span>
-            </div>
-            <button class="step plus" type="button" aria-label="阅读增加 0.5">+</button>
-            <output class="band-value" for="reading"><span>6.5</span><small>BAND</small></output>
-          </div>
-
-          <div class="channel" data-channel="writing">
-            <label for="writing"><span class="skill-cn">写作</span><span class="skill-en">WRITING</span></label>
-            <button class="step minus" type="button" aria-label="写作减少 0.5">−</button>
-            <div class="range-wrap">
-              <input id="writing" data-skill="writing" type="range" min="0" max="9" step="0.5" value="5" aria-label="写作成绩">
-              <span class="ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></span>
-            </div>
-            <button class="step plus" type="button" aria-label="写作增加 0.5">+</button>
-            <output class="band-value" for="writing"><span>5.0</span><small>BAND</small></output>
-          </div>
-
-          <div class="channel" data-channel="speaking">
-            <label for="speaking"><span class="skill-cn">口语</span><span class="skill-en">SPEAKING</span></label>
-            <button class="step minus" type="button" aria-label="口语减少 0.5">−</button>
-            <div class="range-wrap">
-              <input id="speaking" data-skill="speaking" type="range" min="0" max="9" step="0.5" value="7" aria-label="口语成绩">
-              <span class="ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></span>
-            </div>
-            <button class="step plus" type="button" aria-label="口语增加 0.5">+</button>
-            <output class="band-value" for="speaking"><span>7.0</span><small>BAND</small></output>
-          </div>
-        </div>
-      </div>
-
-      <aside class="result-panel" aria-label="计算结果">
-        <div class="result-header">
-          <span class="result-kicker">02 / 汇流结果</span>
-          <span class="ready">LIVE</span>
-        </div>
-        <div class="result-main">
-          <span class="result-label">最终总分</span>
-          <output class="overall" data-overall role="status" aria-live="polite" aria-atomic="true">6.5</output>
-          <span class="overall-caption">OVERALL BAND</span>
-          <div class="average-line">原始平均分 <output data-average>6.25</output></div>
-        </div>
-        <div class="snap-box">
-          <span class="micro">Half-band snap</span>
-          <p data-snap>6.25 → 6.5 · 向上吸附 0.25</p>
-        </div>
-        <button class="reset" type="button">重置示例成绩</button>
-      </aside>
-    </section>
-
-    <section class="rule-strip" aria-labelledby="rule-title">
-      <div class="rule-intro">
-        <span class="micro">03 / 计分规则</span>
-        <h2 id="rule-title">四科相加 ÷ 4，再四舍五入到最近的 0.5</h2>
-        <p>页面同时保留原始平均分，方便你看清最终分如何产生。</p>
-      </div>
-      <div class="example"><strong>6.25 → <b>6.5</b></strong><p>向上到半分</p></div>
-      <div class="example"><strong>6.75 → <b>7.0</b></strong><p>向上到整分</p></div>
-      <div class="example"><strong>6.125 → <b>6.0</b></strong><p>回落到最近刻度</p></div>
-    </section>
-
-    <footer class="source">
-      <div>
-        <strong>OFFICIAL RULE SOURCE / 计分规则来源</strong>
-        <p>本工具仅用于成绩估算，与 IELTS 官方及其合作伙伴无隶属或背书关系。最终成绩以官方成绩单为准。</p>
-        <p>“IELTS”“雅思”及相关标识为 IELTS Partners 的注册商标。</p>
-      </div>
-      <a href="https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail" target="_blank" rel="noopener noreferrer">查看 IELTS 官方计分说明 ↗</a>
-    </footer>
+  <main aria-labelledby="redirect-title">
+    <p id="redirect-title">正在前往新版双语计算器。</p>
+    <p lang="en">Redirecting to the new bilingual calculator.</p>
+    <a href="../index.html">手动打开 / Continue manually</a>
   </main>
-
-  <script>
-    (() => {
-      const defaults = { listening: 6.5, reading: 6.5, writing: 5, speaking: 7 };
-      const channels = Array.from(document.querySelectorAll('[data-channel]'));
-      const overallOutput = document.querySelector('[data-overall]');
-      const averageOutput = document.querySelector('[data-average]');
-      const snapOutput = document.querySelector('[data-snap]');
-
-      const clampBand = value => Math.max(0, Math.min(9, Math.round(Number(value) * 2) / 2));
-      const formatBand = value => Number(value).toFixed(1);
-      const formatAverage = value => value.toFixed(3).replace(/0+$/, '').replace(/\.$/, '.0');
-
-      function updateChannel(channel) {
-        const input = channel.querySelector('input[type="range"]');
-        const value = clampBand(input.value);
-        input.value = String(value);
-        channel.querySelector('.band-value span').textContent = formatBand(value);
-        channel.querySelector('.minus').disabled = value <= 0;
-        channel.querySelector('.plus').disabled = value >= 9;
-        const percent = (value / 9) * 100;
-        input.style.backgroundSize = `${percent}% 100%`;
-      }
-
-      function describeSnap(average, overall) {
-        const delta = Math.round((overall - average) * 1000) / 1000;
-        if (Math.abs(delta) < 0.0001) return `${formatAverage(average)} → ${formatBand(overall)} · 已在 0.5 刻度`;
-        const direction = delta > 0 ? '向上吸附' : '向下回落';
-        return `${formatAverage(average)} → ${formatBand(overall)} · ${direction} ${formatAverage(Math.abs(delta))}`;
-      }
-
-      function calculate() {
-        channels.forEach(updateChannel);
-        const values = channels.map(channel => Number(channel.querySelector('input').value));
-        const average = values.reduce((sum, value) => sum + value, 0) / 4;
-        const overall = Math.round(average * 2) / 2;
-        averageOutput.textContent = formatAverage(average);
-        overallOutput.textContent = formatBand(overall);
-        snapOutput.textContent = describeSnap(average, overall);
-      }
-
-      channels.forEach(channel => {
-        const input = channel.querySelector('input');
-        input.addEventListener('input', calculate);
-        input.addEventListener('change', calculate);
-        channel.querySelector('.minus').addEventListener('click', () => {
-          input.value = String(clampBand(Number(input.value) - 0.5));
-          calculate();
-        });
-        channel.querySelector('.plus').addEventListener('click', () => {
-          input.value = String(clampBand(Number(input.value) + 0.5));
-          calculate();
-        });
-      });
-
-      document.querySelector('.reset').addEventListener('click', () => {
-        channels.forEach(channel => {
-          const input = channel.querySelector('input');
-          input.value = String(defaults[channel.dataset.channel]);
-        });
-        calculate();
-      });
-
-      calculate();
-    })();
-  </script>
 </body>
 </html>
