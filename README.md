@@ -31,7 +31,6 @@
 ├── fluid/index.html        # A · 流体编辑风
 ├── service/index.html      # B · 公共服务风
 ├── instrument/index.html   # C · 精密仪器风
-├── screenshots/            # README 与入口页预览图
 ├── .nojekyll               # 让 GitHub Pages 原样发布静态文件
 └── LICENSE
 ```

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="三个界面版本的非官方 IELTS 雅思总分计算器，支持听力、阅读、写作和口语成绩换算。">
+  <meta name="theme-color" content="#101828">
+  <title>IELTS 雅思成绩计算器｜选择版本</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #101828;
+      --muted: #475467;
+      --line: #d0d5dd;
+      --paper: #f8fafc;
+      --white: #fff;
+      --accent: #d71920;
+      --focus: #fdb022;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    a:focus-visible {
+      outline: 4px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 10;
+      top: 12px;
+      left: 12px;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: var(--white);
+      transform: translateY(-160%);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    header {
+      color: var(--white);
+      background: var(--ink);
+      border-top: 6px solid var(--accent);
+    }
+
+    .shell {
+      width: min(1160px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 88px;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: clamp(1.05rem, 3vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .status {
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,.5);
+      border-radius: 999px;
+      font-size: .8rem;
+      white-space: nowrap;
+    }
+
+    main { padding: 70px 0 80px; }
+
+    .intro {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.25rem, 7vw, 4.6rem);
+      line-height: 1.05;
+      letter-spacing: -.055em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      overflow: hidden;
+      color: inherit;
+      text-decoration: none;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(16,24,40,.05);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #98a2b3;
+      box-shadow: 0 14px 34px rgba(16,24,40,.12);
+    }
+
+    .preview {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      background: #eaecf0;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .preview::before,
+    .preview::after {
+      content: "";
+      position: absolute;
+    }
+
+    .preview span {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 32%;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 850;
+      letter-spacing: -.07em;
+    }
+
+    .preview-fluid {
+      color: #171a1d;
+      background:
+        linear-gradient(135deg, transparent 0 28%, #2756d8 28% 37%, transparent 37%),
+        linear-gradient(145deg, transparent 0 43%, #008f7a 43% 52%, transparent 52%),
+        linear-gradient(155deg, transparent 0 58%, #df533f 58% 67%, transparent 67%),
+        #f6f3ea;
+    }
+
+    .preview-fluid span { background: rgba(246,243,234,.9); }
+
+    .preview-service {
+      color: #fff;
+      background: linear-gradient(90deg, #fff 0 54%, #087f72 54% 100%);
+    }
+
+    .preview-service::before {
+      inset: 18% 55% 18% 8%;
+      background: repeating-linear-gradient(#d0d5dd 0 2px, transparent 2px 20%);
+    }
+
+    .preview-service span { margin-left: 54%; border-color: rgba(255,255,255,.7); }
+
+    .preview-instrument {
+      color: #f4f2e9;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 20px, rgba(32,37,34,.07) 20px 21px),
+        #d8dad4;
+    }
+
+    .preview-instrument::before {
+      inset: 14% 40% 14% 8%;
+      border: 1px solid #202522;
+      background: repeating-linear-gradient(0deg, #e8e9e4 0 18%, #9a9e97 18% 18.5%);
+    }
+
+    .preview-instrument::after {
+      inset: 8% 7% 8% 66%;
+      background: #202522;
+    }
+
+    .preview-instrument span {
+      margin-left: 66%;
+      border-color: #e45b2b;
+      color: #f4f2e9;
+    }
+
+    .card-body {
+      display: grid;
+      gap: 9px;
+      padding: 22px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.25;
+    }
+
+    .card p {
+      min-height: 3.2em;
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .open {
+      margin-top: 4px;
+      font-weight: 750;
+    }
+
+    .open::after { content: " →"; }
+
+    .notice {
+      margin-top: 40px;
+      padding: 18px 20px;
+      color: var(--muted);
+      background: #fff;
+      border-left: 4px solid var(--accent);
+    }
+
+    .notice p { margin: 0; }
+
+    .notice a { text-underline-offset: 3px; }
+
+    footer {
+      padding: 28px 0;
+      color: #667085;
+      border-top: 1px solid var(--line);
+      font-size: .88rem;
+    }
+
+    footer p { margin: 0; }
+
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { display: grid; grid-template-columns: minmax(0, 42%) 1fr; }
+      .preview { height: 100%; aspect-ratio: auto; border-right: 1px solid var(--line); border-bottom: 0; }
+      .card p { min-height: 0; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 28px, 1160px); }
+      .masthead { min-height: 74px; }
+      .status { display: none; }
+      main { padding: 48px 0 60px; }
+      .card { display: flex; }
+      .preview { aspect-ratio: 16 / 9; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header>
+    <div class="shell masthead">
+      <p class="brand">IELTS 雅思成绩计算器</p>
+      <span class="status">3 个界面版本</span>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">选择一个版本</h1>
+      <p class="lead">三种界面，共用同一套雅思总分换算逻辑。输入听力、阅读、写作与口语成绩，即可得到按官方规则折算后的总分。</p>
+    </section>
+
+    <nav class="grid" aria-label="计算器版本">
+      <a class="card" href="./fluid/">
+        <span class="preview preview-fluid" aria-hidden="true"><span>6.5</span></span>
+        <span class="card-body">
+          <span class="eyebrow">Version A</span>
+          <h2>流体编辑风</h2>
+          <p>更具表现力的视觉层次与轻盈交互，适合希望界面更有设计感的用户。</p>
+          <span class="open">打开计算器</span>
+        </span>
+      </a>
+
+      <a class="card" href="./service/">
+        <span class="preview preview-service" aria-hidden="true"><span>6.5</span></span>
+        <span class="card-body">
+          <span class="eyebrow">Version B</span>
+          <h2>公共服务风</h2>
+          <p>清晰、直接、强调表单反馈和错误恢复，接近公共数字服务体验。</p>
+          <span class="open">打开计算器</span>
+        </span>
+      </a>
+
+      <a class="card" href="./instrument/">
+        <span class="preview preview-instrument" aria-hidden="true"><span>6.5</span></span>
+        <span class="card-body">
+          <span class="eyebrow">Version C</span>
+          <h2>精密仪器风</h2>
+          <p>克制、严谨、强调数值与控制感，灵感来自 Braun 式工业设计语言。</p>
+          <span class="open">打开计算器</span>
+        </span>
+      </a>
+    </nav>
+
+    <aside class="notice" aria-label="使用说明">
+      <p><strong>说明：</strong>本项目是非官方学习工具，与 IELTS、British Council、IDP 或 Cambridge University Press &amp; Assessment 无隶属或认可关系。最终成绩以考试机构正式成绩单为准。换算规则参考 <a href="https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail" rel="noopener noreferrer">IELTS 官方评分说明</a>。</p>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <p>开源、无追踪、所有计算均在浏览器本地完成。</p>
+    </div>
+  </footer>
+</body>
+</html>
