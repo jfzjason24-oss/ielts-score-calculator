@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="精密仪器风的非官方 IELTS 雅思总分计算器，以四科 Band Score 实时校准 Overall Band。">
+  <title>雅思总分计算器 · 精密仪器方向</title>
+<style>:root{--paper:#f1f0ea;--paper-deep:#e4e3dc;--panel:#d8dad4;--panel-light:#e8e9e4;--ink:#202522;--ink-soft:#4e5550;--line:#9a9e97;--line-light:#c0c3bc;--accent:#e45b2b;--accent-dark:#bd3f17;--official:#e31837;--white:#ffffff;--shadow:#b8bab4;--focus:#005fcc;color-scheme:light;}*{box-sizing:border-box;}html{min-width:320px;background:var(--paper);scroll-behavior:smooth;}body{margin:0;min-height:100vh;color:var(--ink);background:linear-gradient(rgba(32,37,34,0.035) 1px,transparent 1px),var(--paper);background-size:100% 28px;font-family:"Microsoft YaHei UI","PingFang SC","Noto Sans CJK SC",sans-serif;font-size:15px;line-height:1.55;}button,input{font:inherit;}button{-webkit-tap-highlight-color:transparent;}.skip-link{position:fixed;z-index:100;top:8px;left:8px;padding:10px 14px;color:var(--white);background:var(--ink);transform:translateY(-150%);}.skip-link:focus{transform:translateY(0);}:focus-visible{outline:3px solid var(--focus);outline-offset:3px;}.page{width:min(1216px,calc(100% - 48px));margin:0 auto;padding:26px 0 42px;}.masthead{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:32px;margin-bottom:18px;}.eyebrow,.micro,.serial,.bank-head,.channel-index,.section-en,.value-unit,.result-kicker,.scale-labels,.rule-label,.source-label{font-family:Consolas,"SFMono-Regular","Courier New",monospace;letter-spacing:0.09em;text-transform:uppercase;}.eyebrow{margin:0 0 3px;color:var(--ink-soft);font-size:12px;font-weight:700;}h1{margin:0;font-family:"Arial Narrow","Microsoft YaHei UI",sans-serif;font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.06;letter-spacing:-0.045em;text-wrap:balance;}.masthead-meta{display:flex;align-items:center;gap:12px;padding-bottom:5px;}.unofficial{display:inline-flex;min-height:34px;align-items:center;padding:6px 11px;border:1px solid var(--ink);color:var(--white);background:var(--ink);font-size:13px;font-weight:700;letter-spacing:0.04em;}.serial{color:var(--ink-soft);font-size:12px;font-weight:700;}.instrument{overflow:hidden;border:1px solid var(--ink);border-radius:4px;background:var(--panel);box-shadow:0 10px 0 var(--shadow),0 18px 38px rgba(32,37,34,0.15);}.instrument-topbar{display:grid;grid-template-columns:1fr auto;align-items:center;min-height:54px;padding:9px 15px 9px 18px;border-bottom:1px solid var(--ink);background:var(--panel-light);}.instrument-id{display:flex;align-items:center;gap:12px;min-width:0;}.power-dot{width:10px;height:10px;flex:0 0 auto;border:1px solid var(--accent-dark);border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 2px rgba(255,255,255,0.25);}.instrument-name{min-width:0;font-size:14px;font-weight:800;letter-spacing:0.04em;}.instrument-name span{display:block;color:var(--ink-soft);font-family:Consolas,"SFMono-Regular",monospace;font-size:10px;font-weight:700;letter-spacing:0.12em;}.system-status{display:flex;align-items:center;gap:9px;color:var(--ink-soft);font-size:12px;font-weight:700;}.status-bars{display:inline-grid;grid-template-columns:repeat(4,10px);gap:3px;}.status-bars i{display:block;width:10px;height:4px;background:var(--accent);}.instrument-main{display:grid;grid-template-columns:minmax(610px,1fr) 148px 300px;min-height:420px;}.input-bank{min-width:0;border-right:1px solid var(--ink);background:var(--panel-light);}.bank-head{display:grid;grid-template-columns:38px 128px 38px minmax(160px,1fr) 38px 68px;align-items:center;height:34px;padding:0 14px;border-bottom:1px solid var(--line);color:var(--ink-soft);background:#d0d2cc;font-size:10px;font-weight:700;}.bank-head .adjust-head{grid-column:3 / 6;text-align:center;}.channel{display:grid;grid-template-columns:38px 128px 38px minmax(160px,1fr) 38px 68px;align-items:center;min-height:87px;padding:7px 14px;border-bottom:1px solid var(--line-light);}.channel:last-child{border-bottom:0;}.channel-index{color:var(--ink-soft);font-size:12px;font-weight:700;}.section-label{min-width:0;font-size:17px;font-weight:800;line-height:1.2;cursor:pointer;}.section-en{display:block;margin-top:5px;color:var(--ink-soft);font-size:10px;font-weight:700;}.stepper{display:inline-grid;width:32px;height:32px;place-items:center;border:1px solid var(--ink);border-radius:50%;padding:0;color:var(--white);background:var(--ink);font-family:Arial,sans-serif;font-size:21px;font-weight:400;line-height:1;cursor:pointer;transition:transform 120ms ease,background 120ms ease;}.stepper:hover:not(:disabled){background:var(--accent-dark);transform:translateY(-1px);}.stepper:active:not(:disabled){transform:translateY(1px);}.stepper:disabled{border-color:#8d918a;color:#70766f;background:transparent;cursor:not-allowed;}.slider-cell{min-width:0;padding:0 11px;}.band-range{--fill:0%;width:100%;height:28px;margin:0;padding:0;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;}.band-range::-webkit-slider-runnable-track{width:100%;height:4px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:linear-gradient(to right,var(--accent) 0 var(--fill),#b6bab3 var(--fill) 100%);}.band-range::-moz-range-track{width:100%;height:3px;border:1px solid var(--ink);background:#b6bab3;}.band-range::-moz-range-progress{height:3px;background:var(--accent);}.band-range::-webkit-slider-thumb{width:22px;height:22px;margin-top:-10px;appearance:none;-webkit-appearance:none;border:2px solid var(--panel-light);border-radius:50%;background:var(--ink);box-shadow:0 0 0 1px var(--ink),0 2px 0 rgba(0,0,0,0.18);}.band-range::-moz-range-thumb{width:19px;height:19px;border:2px solid var(--panel-light);border-radius:50%;background:var(--ink);box-shadow:0 0 0 1px var(--ink);}.range-ticks{display:flex;justify-content:space-between;margin-top:-2px;color:var(--ink-soft);font-family:Consolas,monospace;font-size:9px;font-variant-numeric:tabular-nums;}.range-ticks span::before{content:"";display:block;width:1px;height:4px;margin:0 auto 1px;background:var(--line);}.channel-readout{position:relative;display:grid;min-height:54px;place-content:center;border:1px solid var(--ink);background:#f3f2ed;text-align:center;font-variant-numeric:tabular-nums;}.channel-readout output{font-family:"Arial Narrow",Consolas,sans-serif;font-size:23px;font-weight:800;line-height:1;}.value-unit{margin-top:4px;color:var(--ink-soft);font-size:8px;font-weight:700;}.limit-flag{position:absolute;right:2px;bottom:1px;color:var(--accent-dark);font-family:Consolas,monospace;font-size:7px;font-weight:700;}.mixer{position:relative;overflow:hidden;border-right:1px solid var(--ink);background:var(--panel);}.mixer-title{position:absolute;top:10px;left:0;width:100%;color:var(--ink-soft);font-family:Consolas,monospace;font-size:9px;font-weight:700;letter-spacing:0.12em;text-align:center;}.feed,.bus,.output-wire{position:absolute;display:block;background:var(--ink-soft);}.feed{left:0;width:78px;height:1px;}.feed::before{content:"";position:absolute;top:-3px;right:0;width:7px;height:7px;border-radius:50%;background:var(--accent);}.feed-1{top:76px;}.feed-2{top:163px;}.feed-3{top:250px;}.feed-4{top:337px;}.bus{top:76px;left:77px;width:1px;height:262px;}.output-wire{top:206px;left:78px;right:0;height:2px;background:var(--accent);}.sum-node{position:absolute;z-index:1;top:174px;left:47px;display:grid;width:62px;height:62px;place-items:center;border:1px solid var(--ink);border-radius:50%;color:var(--white);background:var(--ink);font-family:"Arial Narrow",Consolas,sans-serif;font-size:19px;font-weight:800;line-height:1.05;text-align:center;}.sum-node small{display:block;font-size:9px;font-weight:700;letter-spacing:0.04em;}.mixer-caption{position:absolute;right:0;bottom:15px;left:0;color:var(--ink-soft);font-size:11px;text-align:center;}.result-module{display:grid;grid-template-rows:auto 1fr auto;min-width:0;padding:21px 22px 17px;color:var(--white);background:var(--ink);}.result-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}.result-kicker{margin:0;color:#c7cbc5;font-size:10px;font-weight:700;}.result-heading h2{margin:2px 0 0;font-size:18px;line-height:1.2;}.calibrated{display:inline-flex;align-items:center;gap:6px;margin-top:1px;color:#c7cbc5;font-family:Consolas,monospace;font-size:9px;font-weight:700;letter-spacing:0.08em;}.calibrated i{width:7px;height:7px;border-radius:50%;background:var(--accent);}.overall-readout{align-self:center;min-width:0;padding:7px 0 13px;text-align:center;}.overall-number{display:block;color:#f4f2e9;font-family:"Arial Narrow",Impact,sans-serif;font-size:clamp(92px,8.7vw,132px);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-0.07em;line-height:0.9;}.overall-unit{display:block;margin-top:10px;color:#c7cbc5;font-family:Consolas,monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;}.average-readout{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-top:15px;color:#d6d8d2;font-size:12px;}.average-readout output{color:var(--white);font-family:Consolas,monospace;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;}.score-scale{--score-position:72.222%;position:relative;height:55px;border-top:1px solid #606760;}.score-scale::before{content:"";position:absolute;top:10px;right:0;left:0;height:14px;background:repeating-linear-gradient(to right,#777e77 0 1px,transparent 1px calc(100% / 18));}.scale-marker{position:absolute;z-index:2;top:5px;left:var(--score-position);width:2px;height:27px;background:var(--accent);transform:translateX(-1px);transition:left 180ms cubic-bezier(.2,.8,.2,1);}.scale-marker::before{content:"";position:absolute;top:-5px;left:-4px;width:10px;height:10px;border-radius:50%;background:var(--accent);}.scale-labels{position:absolute;right:0;bottom:0;left:0;display:flex;justify-content:space-between;color:#aeb3ad;font-size:9px;}.equation-strip{display:grid;grid-template-columns:1fr minmax(280px,auto) auto;align-items:center;min-height:78px;border-top:1px solid var(--ink);background:#cfd1cb;}.equation-block,.rounding-block{min-width:0;padding:10px 18px;}.rounding-block{border-left:1px solid var(--line);}.micro{display:block;margin-bottom:3px;color:var(--ink-soft);font-size:9px;font-weight:700;}.equation,.round-message{display:block;overflow:hidden;font-family:Consolas,"SFMono-Regular",monospace;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;text-overflow:ellipsis;white-space:nowrap;}.round-message{color:var(--accent-dark);}.reset-button{align-self:stretch;min-width:104px;border:0;border-left:1px solid var(--ink);padding:0 18px;color:var(--white);background:var(--ink);font-size:14px;font-weight:800;cursor:pointer;transition:background 120ms ease;}.reset-button:hover{background:var(--accent-dark);}.manual{display:grid;grid-template-columns:1.15fr 1fr;gap:0;margin-top:30px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);}.rule-copy{padding:17px 26px 18px 0;border-right:1px solid var(--line);}.rule-label{display:block;margin-bottom:4px;color:var(--accent-dark);font-size:10px;font-weight:700;}.rule-copy h2{margin:0;font-size:clamp(18px,2vw,25px);line-height:1.35;text-wrap:pretty;}.rule-copy p{margin:8px 0 0;color:var(--ink-soft);font-size:14px;}.examples{display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:0;list-style:none;}.examples li{display:grid;min-width:0;place-content:center;padding:12px 13px;border-right:1px solid var(--line-light);font-family:Consolas,monospace;font-variant-numeric:tabular-nums;text-align:center;}.examples li:last-child{border-right:0;}.example-numbers{font-size:18px;font-weight:700;white-space:nowrap;}.example-numbers b{color:var(--accent-dark);}.examples small{display:block;margin-top:4px;color:var(--ink-soft);font-family:"Microsoft YaHei UI",sans-serif;font-size:11px;}.provenance{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;margin-top:22px;padding-top:18px;border-top:1px solid var(--ink);}.source-logo-wrap{display:grid;width:90px;height:54px;place-items:center;overflow:hidden;border:1px solid var(--line);background:var(--white);}.source-logo{display:block;width:78px;height:46px;object-fit:contain;}.source-label{display:block;margin-bottom:3px;color:var(--official);font-size:9px;font-weight:700;}.source-copy p{margin:0;color:var(--ink-soft);font-size:12px;line-height:1.5;}.source-copy p + p{margin-top:3px;}.source-link{display:inline-flex;align-items:center;min-height:40px;padding:7px 12px;border:1px solid var(--ink);color:var(--ink);background:transparent;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;}.source-link:hover{color:var(--white);background:var(--ink);}.sr-only{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0,0,0,0) !important;white-space:nowrap !important;border:0 !important;}@media (max-width:1040px){.instrument-main{grid-template-columns:minmax(500px,1fr) 118px 258px;}.bank-head,.channel{grid-template-columns:32px 108px 36px minmax(130px,1fr) 36px 62px;padding-right:10px;padding-left:10px;}.overall-number{font-size:96px;}.result-module{padding-right:18px;padding-left:18px;}.equation-strip{grid-template-columns:1fr 1fr auto;}.equation,.round-message{font-size:12px;}}@media (max-width:900px){.page{width:min(100% - 28px,720px);}.masthead{grid-template-columns:1fr;gap:11px;}.masthead-meta{padding-bottom:0;}.instrument-main{grid-template-columns:1fr;}.input-bank{border-right:0;}.mixer{display:none;}.result-module{min-height:300px;border-top:1px solid var(--ink);}.overall-number{font-size:112px;}.equation-strip{grid-template-columns:1fr auto;}.rounding-block{grid-column:1;grid-row:2;border-top:1px solid var(--line);border-left:0;}.reset-button{grid-column:2;grid-row:1 / 3;}.manual{grid-template-columns:1fr;}.rule-copy{padding-right:0;border-right:0;border-bottom:1px solid var(--line);}}@media (max-width:620px){body{background-size:100% 24px;}.page{width:calc(100% - 24px);padding-top:18px;}h1{font-size:34px;}.masthead-meta{align-items:flex-start;flex-direction:column;gap:7px;}.instrument-topbar{grid-template-columns:1fr;gap:6px;}.system-status{padding-left:22px;}.bank-head{display:none;}.channel{grid-template-columns:28px 1fr 64px;grid-template-areas:"index label readout" "minus slider plus";gap:7px 9px;min-height:118px;padding:10px 12px;}.channel-index{grid-area:index;}.section-label{grid-area:label;}.stepper[data-action="minus"]{grid-area:minus;justify-self:center;}.slider-cell{grid-area:slider;padding:0 3px;}.stepper[data-action="plus"]{grid-area:plus;justify-self:center;}.channel-readout{grid-area:readout;}.channel-readout{min-height:48px;}.result-module{min-height:286px;padding:18px 18px 14px;}.overall-number{font-size:104px;}.equation-strip{grid-template-columns:1fr 86px;}.equation-block,.rounding-block{padding:11px 12px;}.equation{overflow:visible;line-height:1.45;text-overflow:clip;white-space:normal;}.reset-button{min-width:0;padding:0 8px;}.examples{grid-template-columns:1fr;}.examples li{min-height:72px;border-right:0;border-bottom:1px solid var(--line-light);}.examples li:last-child{border-bottom:0;}.provenance{grid-template-columns:1fr;gap:12px;}.source-link{grid-column:1;justify-content:center;}}@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto !important;transition-duration:0.01ms !important;}}</style>
+</head>
+<body>
+  <a class="skip-link" href="#calculator">跳到计算器</a>
+  <main class="page">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Band score / 四科汇流校准台</p>
+        <h1>雅思总分计算器</h1>
+      </div>
+      <div class="masthead-meta" aria-label="工具属性">
+        <span class="unofficial">非官方估算工具</span>
+        <span class="serial">INSTRUMENT C · 04→01</span>
+      </div>
+    </header>
+
+    <section class="instrument" id="calculator" aria-labelledby="instrument-title">
+      <div class="instrument-topbar">
+        <div class="instrument-id">
+          <span class="power-dot" aria-hidden="true"></span>
+          <div class="instrument-name" id="instrument-title">
+            四科等权输入控制台
+            <span>Four equal channels / instant calibration</span>
+          </div>
+        </div>
+        <div class="system-status" aria-label="系统状态：实时计算已启用">
+          <span class="status-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          LIVE · 0.5 STEP
+        </div>
+      </div>
+
+      <div class="instrument-main">
+        <section class="input-bank" aria-label="四科成绩输入">
+          <div class="bank-head" aria-hidden="true">
+            <span>CH</span>
+            <span>SECTION</span>
+            <span class="adjust-head">ADJUST 0.0 — 9.0</span>
+            <span>VALUE</span>
+          </div>
+
+          <div class="channel" data-channel="listening">
+            <span class="channel-index">01</span>
+            <label class="section-label" for="listening-range">听力<span class="section-en">Listening</span></label>
+            <button class="stepper" type="button" data-action="minus" aria-label="听力减 0.5">−</button>
+            <div class="slider-cell">
+              <input class="band-range" id="listening-range" type="range" min="0" max="9" step="0.5" value="6.5" aria-describedby="range-help">
+              <div class="range-ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></div>
+            </div>
+            <button class="stepper" type="button" data-action="plus" aria-label="听力加 0.5">+</button>
+            <div class="channel-readout">
+              <output for="listening-range" data-skill="listening">6.5</output>
+              <span class="value-unit">Band</span>
+              <span class="limit-flag" data-limit aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="channel" data-channel="reading">
+            <span class="channel-index">02</span>
+            <label class="section-label" for="reading-range">阅读<span class="section-en">Reading</span></label>
+            <button class="stepper" type="button" data-action="minus" aria-label="阅读减 0.5">−</button>
+            <div class="slider-cell">
+              <input class="band-range" id="reading-range" type="range" min="0" max="9" step="0.5" value="6.5" aria-describedby="range-help">
+              <div class="range-ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></div>
+            </div>
+            <button class="stepper" type="button" data-action="plus" aria-label="阅读加 0.5">+</button>
+            <div class="channel-readout">
+              <output for="reading-range" data-skill="reading">6.5</output>
+              <span class="value-unit">Band</span>
+              <span class="limit-flag" data-limit aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="channel" data-channel="writing">
+            <span class="channel-index">03</span>
+            <label class="section-label" for="writing-range">写作<span class="section-en">Writing</span></label>
+            <button class="stepper" type="button" data-action="minus" aria-label="写作减 0.5">−</button>
+            <div class="slider-cell">
+              <input class="band-range" id="writing-range" type="range" min="0" max="9" step="0.5" value="5" aria-describedby="range-help">
+              <div class="range-ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></div>
+            </div>
+            <button class="stepper" type="button" data-action="plus" aria-label="写作加 0.5">+</button>
+            <div class="channel-readout">
+              <output for="writing-range" data-skill="writing">5.0</output>
+              <span class="value-unit">Band</span>
+              <span class="limit-flag" data-limit aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="channel" data-channel="speaking">
+            <span class="channel-index">04</span>
+            <label class="section-label" for="speaking-range">口语<span class="section-en">Speaking</span></label>
+            <button class="stepper" type="button" data-action="minus" aria-label="口语减 0.5">−</button>
+            <div class="slider-cell">
+              <input class="band-range" id="speaking-range" type="range" min="0" max="9" step="0.5" value="7" aria-describedby="range-help">
+              <div class="range-ticks" aria-hidden="true"><span>0</span><span>3</span><span>6</span><span>9</span></div>
+            </div>
+            <button class="stepper" type="button" data-action="plus" aria-label="口语加 0.5">+</button>
+            <div class="channel-readout">
+              <output for="speaking-range" data-skill="speaking">7.0</output>
+              <span class="value-unit">Band</span>
+              <span class="limit-flag" data-limit aria-hidden="true"></span>
+            </div>
+          </div>
+          <p class="sr-only" id="range-help">可用方向键逐次加减 0.5，范围为 0 到 9。</p>
+        </section>
+
+        <div class="mixer" aria-hidden="true">
+          <span class="mixer-title">EQUAL INPUT BUS</span>
+          <i class="feed feed-1"></i>
+          <i class="feed feed-2"></i>
+          <i class="feed feed-3"></i>
+          <i class="feed feed-4"></i>
+          <i class="bus"></i>
+          <i class="output-wire"></i>
+          <div class="sum-node">Σ<small>÷ 4</small></div>
+          <span class="mixer-caption">4 条等权轨道<br>汇入同一平均值</span>
+        </div>
+
+        <section class="result-module" aria-labelledby="result-title">
+          <div class="result-heading">
+            <div>
+              <p class="result-kicker">Calibrated output</p>
+              <h2 id="result-title">最终总分</h2>
+            </div>
+            <span class="calibrated"><i aria-hidden="true"></i>READY</span>
+          </div>
+
+          <div class="overall-readout">
+            <output class="overall-number" data-overall>6.5</output>
+            <span class="overall-unit">Overall Band</span>
+            <div class="average-readout">
+              <span>原始平均</span>
+              <output data-average>6.25</output>
+            </div>
+          </div>
+
+          <div class="score-scale" aria-label="0 到 9 的半分刻度">
+            <i class="scale-marker" aria-hidden="true"></i>
+            <div class="scale-labels" aria-hidden="true"><span>0.0</span><span>4.5</span><span>9.0</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="equation-strip">
+        <div class="equation-block">
+          <span class="micro">RAW CALCULATION</span>
+          <output class="equation" id="equation">(6.5 + 6.5 + 5.0 + 7.0) ÷ 4 = 6.25</output>
+        </div>
+        <div class="rounding-block">
+          <span class="micro">HALF-BAND SNAP</span>
+          <output class="round-message" id="round-message">6.25 → 6.5 · 向上吸附 0.25</output>
+        </div>
+        <button class="reset-button" id="reset-button" type="button" aria-label="重置四科为初始示例值">重置</button>
+      </div>
+    </section>
+
+    <section class="manual" aria-labelledby="rule-title">
+      <div class="rule-copy">
+        <span class="rule-label">01 / 计分规则</span>
+        <h2 id="rule-title">四科相加 ÷ 4，再四舍五入到最近的 0.5</h2>
+        <p>每一科权重相同。先保留真实平均值，再将结果校准到整分或半分刻度。</p>
+      </div>
+      <ol class="examples" aria-label="官方规则中的舍入示例">
+        <li><span class="example-numbers">6.25 → <b>6.5</b></span><small>向上到半分</small></li>
+        <li><span class="example-numbers">6.75 → <b>7.0</b></span><small>向上到整分</small></li>
+        <li><span class="example-numbers">6.125 → <b>6.0</b></span><small>回落到最近刻度</small></li>
+      </ol>
+    </section>
+
+    <footer class="provenance">
+<div class="source-copy">
+        <span class="source-label">计分规则来源 / Official source</span>
+        <p>本工具仅用于成绩估算，与 IELTS 官方及其合作伙伴无隶属或背书关系。最终成绩以官方成绩单为准。</p>
+        <p>“IELTS”“雅思”及相关标识为 IELTS Partners 的注册商标。</p>
+      </div>
+      <a class="source-link" href="https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail" target="_blank" rel="noopener noreferrer">查看 IELTS 官方计分说明 ↗</a>
+    </footer>
+
+    <div class="sr-only" id="live-status" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const initialScores = Object.freeze({
+        listening: 6.5,
+        reading: 6.5,
+        writing: 5.0,
+        speaking: 7.0
+      });
+
+      const channelNames = Object.freeze({
+        listening: "听力",
+        reading: "阅读",
+        writing: "写作",
+        speaking: "口语"
+      });
+
+      const channels = Array.from(document.querySelectorAll("[data-channel]"));
+      const overallOutput = document.querySelector("[data-overall]");
+      const averageOutput = document.querySelector("[data-average]");
+      const equationOutput = document.getElementById("equation");
+      const roundMessage = document.getElementById("round-message");
+      const scoreScale = document.querySelector(".score-scale");
+      const liveStatus = document.getElementById("live-status");
+      const resetButton = document.getElementById("reset-button");
+
+      const clampToBand = (value) => {
+        const numeric = Number(value);
+        if (!Number.isFinite(numeric)) return 0;
+        return Math.max(0, Math.min(9, Math.round(numeric * 2) / 2));
+      };
+
+      const formatAverage = (value) => value.toFixed(3).replace(/0+$/, "").replace(/\.$/, "");
+
+      const getScores = () => channels.map((channel) => {
+        const input = channel.querySelector("input[type='range']");
+        return clampToBand(input.value);
+      });
+
+      const syncChannel = (channel, value) => {
+        const score = clampToBand(value);
+        const input = channel.querySelector("input[type='range']");
+        const output = channel.querySelector("[data-skill]");
+        const minus = channel.querySelector("[data-action='minus']");
+        const plus = channel.querySelector("[data-action='plus']");
+        const limit = channel.querySelector("[data-limit]");
+
+        input.value = score.toFixed(1);
+        input.style.setProperty("--fill", `${(score / 9) * 100}%`);
+        output.textContent = score.toFixed(1);
+        minus.disabled = score <= 0;
+        plus.disabled = score >= 9;
+        limit.textContent = score <= 0 ? "MIN" : score >= 9 ? "MAX" : "";
+        return score;
+      };
+
+      const updateCalculator = (announcementPrefix = "") => {
+        const values = channels.map((channel) => {
+          const input = channel.querySelector("input[type='range']");
+          return syncChannel(channel, input.value);
+        });
+
+        const average = values.reduce((total, value) => total + value, 0) / 4;
+        const overall = Math.round(average * 2) / 2;
+        const averageText = formatAverage(average);
+        const overallText = overall.toFixed(1);
+        const difference = overall - average;
+
+        averageOutput.textContent = averageText;
+        overallOutput.textContent = overallText;
+        equationOutput.textContent = `(${values.map((value) => value.toFixed(1)).join(" + ")}) ÷ 4 = ${averageText}`;
+        scoreScale.style.setProperty("--score-position", `${(overall / 9) * 100}%`);
+
+        let snapDescription = "恰好落在 0.5 刻度";
+        if (difference > 0.00001) {
+          snapDescription = `向上吸附 ${formatAverage(difference)}`;
+        } else if (difference < -0.00001) {
+          snapDescription = `向下吸附 ${formatAverage(Math.abs(difference))}`;
+        }
+        roundMessage.textContent = `${averageText} → ${overallText} · ${snapDescription}`;
+
+        liveStatus.textContent = `${announcementPrefix}原始平均 ${averageText}，最终总分 ${overallText}。${snapDescription}。`;
+        return { values, average, overall };
+      };
+
+      channels.forEach((channel) => {
+        const key = channel.dataset.channel;
+        const input = channel.querySelector("input[type='range']");
+        const minus = channel.querySelector("[data-action='minus']");
+        const plus = channel.querySelector("[data-action='plus']");
+
+        input.addEventListener("input", () => {
+          syncChannel(channel, input.value);
+          updateCalculator(`${channelNames[key]}调整为 ${Number(input.value).toFixed(1)}。`);
+        });
+
+        minus.addEventListener("click", () => {
+          const next = clampToBand(Number(input.value) - 0.5);
+          syncChannel(channel, next);
+          updateCalculator(`${channelNames[key]}调整为 ${next.toFixed(1)}。`);
+        });
+
+        plus.addEventListener("click", () => {
+          const next = clampToBand(Number(input.value) + 0.5);
+          syncChannel(channel, next);
+          updateCalculator(`${channelNames[key]}调整为 ${next.toFixed(1)}。`);
+        });
+      });
+
+      resetButton.addEventListener("click", () => {
+        channels.forEach((channel) => {
+          const key = channel.dataset.channel;
+          syncChannel(channel, initialScores[key]);
+        });
+        updateCalculator("已重置为示例值。");
+      });
+
+      window.setBandScores = (scores) => {
+        channels.forEach((channel, index) => {
+          const key = channel.dataset.channel;
+          const supplied = Array.isArray(scores) ? scores[index] : scores && scores[key];
+          if (supplied !== undefined) syncChannel(channel, supplied);
+        });
+        return updateCalculator();
+      };
+
+      window.getBandState = () => {
+        const state = updateCalculator();
+        return { scores: state.values.slice(), average: state.average, overall: state.overall };
+      };
+
+      updateCalculator();
+    })();
+  </script>
+</body>
+</html>
